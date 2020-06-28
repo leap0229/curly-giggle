@@ -28,7 +28,7 @@ $(function () {
             //formData.append('imageFiles[]', createBase64OfImage(canvasElement), fileName);
         });
 
-        let response = await fetch('http://localhost:9001/server', {
+        let response = await fetch('https://zealous-clarke-150253.netlify.app/.netlify/functions/server', {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(postData)
