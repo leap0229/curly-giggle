@@ -1,6 +1,8 @@
 const THUMBNAIL_MAX_HEIGHT = 400; // 画像がタテ長の場合、縦サイズがこの値になるように縮小される
 const THUMBNAIL_MAX_WIDTH = 400; // 画像がヨコ長の場合、横サイズがこの値になるように縮小される
-const THUMBNAIL_ROW_COUNT = 4;
+const THUMBNAIL_GRID_MAX_WIDTH = 480;
+const THUMBNAIL_GRID_MAX_HEIGHT = 480;
+const THUMBNAIL_COLUMN_COUNT_PER_ROW = Math.floor(window.innerWidth / THUMBNAIL_GRID_MAX_WIDTH);
 
 $(function () {
     // ファイルが選択されたら実行される関数
@@ -8,6 +10,9 @@ $(function () {
     
     // アップロードボタンがクリックされたら実行される関数
     $('#upload').click(async function () {
+        const uploadButton = document.getElementById('upload');
+        uploadButton.disabled = true;
+
         const childContainerElements = document.getElementsByClassName('child-container');
 
         // ファイルが指定されていなければ何も起こらない
@@ -15,17 +20,12 @@ $(function () {
             return;
         }
 
-        // 送信するフォームデータを作成する
-        //const formData = new FormData();
-
         const postData = [];
         // 先ほど作った縮小済画像データを添付する
         Array.from(childContainerElements).map(childContainerElement => {
             const fileName = childContainerElement.getAttribute('id');
             const canvasElement = childContainerElement.getElementsByTagName('canvas')[0];
             postData.push({'fileName': fileName, 'imageFile': createBase64OfImage(canvasElement)});
-            // keyの末尾に[]をつけると、要素が一つでもリストとして認識される
-            //formData.append('imageFiles[]', createBase64OfImage(canvasElement), fileName);
         });
 
         let response = await fetch('https://zealous-clarke-150253.netlify.app/.netlify/functions/server', {
@@ -50,7 +50,7 @@ function getSelectedImageFiles() {
     return $('#file').prop('files');
 }
 
-function loadImagesToCanvas() {
+function loadImagesToCanvas() {        
     // ファイルを取得する    
     // 選択されたファイルが画像かどうか判定する
     // ここでは、jpeg形式とpng形式のみを画像をみなす
@@ -78,22 +78,30 @@ function loadImagesToCanvas() {
         //canvasElement.setAttribute('class', imageFile.name);
         loadImageToCanvas(imageFile, canvasElement);
     });
+
+    const uploadButton = document.getElementById('upload');
+    uploadButton.disabled = false;
 }
 
 function createContainerGridElement(elementCount) {
+    const windowWidth = window.innerWidth;
+
     // 0-4は1行、5-8は2行
-    const rowCount = Math.min(1, elementCount % THUMBNAIL_ROW_COUNT) + elementCount / THUMBNAIL_ROW_COUNT;
+    const rowCount = Math.min(1, elementCount % THUMBNAIL_COLUMN_COUNT_PER_ROW) + elementCount / THUMBNAIL_COLUMN_COUNT_PER_ROW;
     // 一行の最大は４に設定
-    const columnCount = Math.min(THUMBNAIL_ROW_COUNT, elementCount);
+    const columnCount = Math.min(THUMBNAIL_COLUMN_COUNT_PER_ROW, elementCount);
 
     const canvasContainerElement = document.createElement('div');
     canvasContainerElement.setAttribute('id', 'container');
-    canvasContainerElement.style['grid-template-rows'] = '450px '.repeat(rowCount);
-    canvasContainerElement.style['grid-template-columns'] = '450px '.repeat(columnCount);
+    canvasContainerElement.style['grid-template-rows'] = `${THUMBNAIL_GRID_MAX_HEIGHT}px `.repeat(rowCount);
+    canvasContainerElement.style['grid-template-columns'] = `${THUMBNAIL_GRID_MAX_WIDTH}px `.repeat(columnCount);
 
-    // TODO 無駄にgridつくっている
     for (let row = 1; row <= rowCount; row++) {
         for (let column = 1; column <= columnCount; column++) {
+            if (elementCount < (row - 1) * THUMBNAIL_COLUMN_COUNT_PER_ROW + column) {
+                break;
+            }
+
             const divElement = document.createElement('div');
             divElement.setAttribute('class', 'child-container')
             divElement.style['grid-row'] = `${row} / ${row + 1}`;
@@ -196,20 +204,24 @@ function createBase64OfImage(canvasElement) {
 
 function createPredictResult(resultJson) {
     const divElementForName = document.createElement('div');
+    divElementForName.setAttribute('class', 'result-text');
+
     const labelElement = document.createElement('label');
     labelElement.textContent = '認識結果: ';
 
     const inputElement = document.createElement('input');
-    inputElement.value = resultJson.name;
+    inputElement.value = resultJson.name === '' ? '認識不可' : resultJson.name;
 
     divElementForName.appendChild(labelElement);
     divElementForName.appendChild(inputElement);
 
     const divElementForScore = document.createElement('div');
     const scoreLabelElement = document.createElement('label');
+    scoreLabelElement.setAttribute('class', 'result-text');
     scoreLabelElement.textContent = `score: ${resultJson.score}`;
-    if (resultJson.score <= 0.7) {
-        labelElement.color = 'red';
+    if (resultJson.score === '' || resultJson.score <= 0.7) {
+        console.log('h')
+        scoreLabelElement.style.color = 'red';
     }
     divElementForScore.appendChild(scoreLabelElement);
 

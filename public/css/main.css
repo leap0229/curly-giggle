@@ -1,3 +1,24 @@
 #container {
     display: grid;
 }
+
+#header {
+    margin: 10px;
+}
+
+canvas {
+    outline: black 2px solid;
+    margin: 5px;
+}
+
+div {
+    margin: 5px;
+}
+
+.result-text {
+    text-align:  center;    
+}
+
+.child-container {
+    text-align:  center;
+}

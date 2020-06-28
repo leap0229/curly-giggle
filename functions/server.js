@@ -19,11 +19,6 @@ exports.handler = async (event, context) => {
     const predictPromises = imageFiles.map(async imageFile => {
         const content = Buffer.from(imageFile.imageFile, 'base64');
         const predictResult = await predict(content);
-
-        if (predictResult.name == '') {
-            predictResult.name = '認識失敗';
-            predictResult.score = 0;
-        }
     
         predictResult.fileName = imageFile.fileName;
 
