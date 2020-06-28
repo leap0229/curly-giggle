@@ -1,0 +1,18 @@
+{
+  "name": "netlify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/automl": "^2.1.0",
+    "connect-multiparty": "^2.2.0",
+    "google-proto-files": "^1.1.2",
+    "netlify-lambda": "^1.6.3",
+    "node-fetch": "^2.6.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "build": "netlify-lambda build functions/",
+    "serve": "netlify-lambda serve functions/ --config ./webpack.function.js"
+  }
+}
