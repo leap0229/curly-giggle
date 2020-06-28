@@ -2357,6 +2357,14 @@ google-p12-pem@^3.0.0:
   dependencies:
     node-forge "^0.9.0"
 
+google-proto-files@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/google-proto-files/-/google-proto-files-1.1.2.tgz#d24c589aea5435db8d4cf3cefdbbf5542664d58a"
+  integrity sha512-j5z6RH5Ke50T0vAgSQsSvsIhJzgXp5Q3v1hWnqf+8TFFixpgjZFQMQhRheglYE23BTfxL3LL1UIXdx/obhixiQ==
+  dependencies:
+    protobufjs "^6.8.0"
+    walkdir "^0.4.0"
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
@@ -3394,7 +3402,7 @@ promise-inflight@^1.0.1:
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   integrity sha1-mEcocL8igTL8vdhoEputEsPAKeM=
 
-protobufjs@^6.8.6, protobufjs@^6.9.0:
+protobufjs@^6.8.0, protobufjs@^6.8.6, protobufjs@^6.9.0:
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.9.0.tgz#c08b2bf636682598e6fabbf0edb0b1256ff090bd"
   integrity sha512-LlGVfEWDXoI/STstRDdZZKb/qusoAWUnmLg9R8OLSO473mBLWHowx8clbX5/+mKDEI+v7GzjoK9tRPZMMcoTrg==
@@ -4260,6 +4268,11 @@ webpack-merge@^4.1.4:
   integrity sha512-TUE1UGoTX2Cd42j3krGYqObZbOD+xF7u28WB7tfUordytSjbWTIjK/8V0amkBfTYN4/pB/GIDlJZZ657BGG19g==
   dependencies:
     lodash "^4.17.15"
+
+webpack-node-externals@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-1.7.2.tgz#6e1ee79ac67c070402ba700ef033a9b8d52ac4e3"
+  integrity sha512-ajerHZ+BJKeCLviLUUmnyd5B4RavLF76uv3cs6KNuO8W+HuQaEs0y0L7o40NQxdPy5w0pcv8Ew7yPUAQG0UdCg==
 
 webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   version "1.4.3"
